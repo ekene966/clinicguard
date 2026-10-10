@@ -7,7 +7,7 @@ down:
 	docker compose down --remove-orphans
 
 test:
-	py -3.12 -m pytest -q tests/test_policy.py
+	python -m pytest -q tests/test_policy.py
 
 attack:
 	docker compose exec attacker /attack/attack.sh

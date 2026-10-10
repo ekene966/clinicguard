@@ -1,0 +1,78 @@
+name: clinicguard
+
+services:
+  gateway:
+    build: ./gateway
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    sysctls:
+      net.ipv4.ip_forward: "1"
+    networks:
+      staff:
+        ipv4_address: 10.10.10.254
+      guest:
+        ipv4_address: 10.10.20.254
+      server:
+        ipv4_address: 10.10.30.254
+      management:
+        ipv4_address: 10.10.99.254
+      attacker:
+        ipv4_address: 10.10.66.254
+
+  staff-client:
+    image: alpine:3.20
+    command: ["sleep", "infinity"]
+    networks:
+      staff:
+        ipv4_address: 10.10.10.10
+
+  guest-client:
+    image: alpine:3.20
+    command: ["sleep", "infinity"]
+    networks:
+      guest:
+        ipv4_address: 10.10.20.10
+
+  attacker:
+    image: alpine:3.20
+    command: ["sh", "-c", "echo 'Attacker container ready'; sleep 2"]
+    networks:
+      attacker:
+        ipv4_address: 10.10.66.10
+
+  test:
+    image: python:3.12-alpine
+    working_dir: /workspace
+    volumes:
+      - ./tests:/workspace/tests:ro
+    command: ["python", "-m", "pytest", "-q"]
+    profiles: ["test"]
+
+networks:
+  staff:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
+  guest:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.20.0/24
+  server:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.30.0/24
+  management:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.99.0/24
+  attacker:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.66.0/24
+

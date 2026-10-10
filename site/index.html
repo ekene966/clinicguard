@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ClinicGuard: a Docker-based simulated clinic security lab.">
+  <title>ClinicGuard | Secure Clinic Network Lab</title>
+  <style>
+    :root { color-scheme: dark; --bg: #08111f; --panel: #101f33; --text: #e8f0fb; --muted: #a9bad0; --accent: #57d3a0; --line: #28415e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(135deg, var(--bg), #10243a); color: var(--text); font: 16px/1.6 system-ui, sans-serif; }
+    main { max-width: 1080px; margin: auto; padding: 64px 24px; }
+    .eyebrow { color: var(--accent); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 1; margin: 16px 0 24px; max-width: 850px; }
+    h2 { margin-top: 56px; font-size: 2rem; }
+    .lead { color: var(--muted); font-size: 1.25rem; max-width: 760px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0; }
+    a.button { background: var(--accent); color: #062016; border-radius: 8px; font-weight: 700; padding: 11px 18px; text-decoration: none; }
+    a.button.secondary { background: transparent; border: 1px solid var(--line); color: var(--text); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card { background: rgba(16, 31, 51, .86); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+    .card h3 { margin-top: 0; color: var(--accent); }
+    li { margin: 8px 0; }
+    code { color: var(--accent); }
+    footer { border-top: 1px solid var(--line); color: var(--muted); margin-top: 64px; padding-top: 24px; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Security engineering portfolio project</p>
+    <h1>ClinicGuard</h1>
+    <p class="lead">A Docker-based simulated clinic network demonstrating segmentation, default-deny firewalling, TLS-protected synthetic EHR access, IDS monitoring, centralized logs, and automated security tests.</p>
+    <div class="actions">
+      <a class="button" href="https://github.com/ekene966/clinicguard">View source on GitHub</a>
+      <a class="button secondary" href="https://github.com/ekene966/clinicguard/actions">View CI results</a>
+    </div>
+
+    <h2>What it demonstrates</h2>
+    <div class="grid">
+      <section class="card"><h3>Network segmentation</h3><p>Staff, guest, server, management, and attacker zones are represented by isolated Docker networks.</p></section>
+      <section class="card"><h3>Default deny</h3><p>nftables drops forwarded traffic by default and permits only the intended staff HTTPS boundary.</p></section>
+      <section class="card"><h3>Detection and evidence</h3><p>Suricata detects probes while Loki, Promtail, and Grafana centralize security and proxy logs.</p></section>
+      <section class="card"><h3>Automated proof</h3><p>pytest integration tests and an attacker simulation verify allowed and blocked paths in CI.</p></section>
+    </div>
+
+    <h2>Technology stack</h2>
+    <div class="grid">
+      <section class="card"><h3>Runtime</h3><p>Docker Desktop, Docker Compose, Linux containers, WSL2</p></section>
+      <section class="card"><h3>Security</h3><p>nftables, nginx, TLS, Suricata 7.0, dnsmasq</p></section>
+      <section class="card"><h3>Observability</h3><p>Loki 3.2.1, Promtail 3.2.1, Grafana 11.3.1</p></section>
+      <section class="card"><h3>Testing</h3><p>Python 3.12, pytest, POSIX shell, GitHub Actions</p></section>
+    </div>
+
+    <h2>Project notes</h2>
+    <ul>
+      <li>All EHR data is synthetic; this is not a healthcare product or HIPAA certification.</li>
+      <li>Docker networks simulate routed segmentation and are not physical VLANs.</li>
+      <li>The live Docker stack and Grafana dashboard run locally; GitHub Pages hosts this static project overview.</li>
+    </ul>
+    <div class="actions">
+      <a class="button secondary" href="https://github.com/ekene966/clinicguard/blob/main/docs/architecture.md">Architecture</a>
+      <a class="button secondary" href="https://github.com/ekene966/clinicguard/blob/main/docs/threat-model.md">Threat model</a>
+      <a class="button secondary" href="https://github.com/ekene966/clinicguard/blob/main/README.md">Documentation</a>
+    </div>
+    <footer>ClinicGuard · Built for education, testing, and security engineering practice.</footer>
+  </main>
+</body>
+</html>

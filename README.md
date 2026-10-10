@@ -95,6 +95,16 @@ Open Grafana at <http://localhost:3000> after `make up`.
 See [docs/setup-guide.md](docs/setup-guide.md) for Windows + WSL2 setup notes
 and [docs/architecture.md](docs/architecture.md) for the design.
 
+## GitHub Pages site
+
+The repository also publishes a static project overview through GitHub Pages:
+<https://ekene966.github.io/clinicguard/>.
+
+GitHub Pages hosts the portfolio site and documentation summary. It does not
+run Docker, Grafana, Suricata, Loki, or the synthetic EHR; those services run
+locally with Docker Compose. Updates to `site/` on `main` deploy automatically
+through [.github/workflows/pages.yml](.github/workflows/pages.yml).
+
 ## How to update the project
 
 Use a feature branch for changes and keep the default-deny policy intact:

@@ -28,3 +28,19 @@ Future work is organized in the staged roadmap in the README.
 - Suricata IDS monitoring.
 - Loki, Promtail, and Grafana observability.
 - Automated policy tests, attack simulation, and GitHub Pages documentation.
+
+## [0.4.0] - 2026-10-10
+
+### Added
+
+- Health checks and a memory limit for core observability services.
+- Synthetic EHR, Loki, and Grafana backup helper.
+- Production-style deployment and restore guidance.
+
+## [1.0.0] - 2026-10-10
+
+### Added
+
+- Trivy filesystem/IaC scanning and Hadolint Dockerfile linting.
+- Dependabot configuration for GitHub Actions.
+- Pull request, contributing, and security policy guidance.

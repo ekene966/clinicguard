@@ -15,6 +15,12 @@ to the EHR through its server-zone interface. Guest and attacker traffic is
 denied by default. Suricata, Loki, Promtail, and Grafana provide centralized
 security evidence, while pytest proves the access policy.
 
+The synthetic EHR includes SQLite-backed users and patient records, PBKDF2
+password verification, short-lived secure sessions, doctor/nurse/admin role
+checks, audit events, JSON validation, and a `/healthz` endpoint. The default
+lab password is controlled by `EHR_DEMO_PASSWORD`; set it in a local `.env`
+file before sharing the stack.
+
 The observability stack includes Loki, Promtail, and Grafana. Run
 `make attack` to exercise blocked HTTPS probes and inspect the resulting logs.
 See the [threat model](docs/threat-model.md) and

@@ -47,7 +47,7 @@ def require_running_stack():
 def test_staff_can_reach_ehr_proxy():
     result = run_from_client("staff-client", TARGET["staff-client"])
     assert result.returncode == 0, result.stderr
-    assert "Directory listing" in result.stdout
+    assert "ClinicGuard synthetic EHR" in result.stdout
 
 
 @pytest.mark.parametrize(

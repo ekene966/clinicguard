@@ -87,10 +87,14 @@ services:
         ipv4_address: 10.10.66.10
 
   ehr-app:
-    build: ./clients
+    build: ./ehr_app
     cap_add:
       - NET_ADMIN
     command: ["server"]
+    environment:
+      EHR_DEMO_PASSWORD: ${EHR_DEMO_PASSWORD:-clinicguard-demo}
+    volumes:
+      - ehr-data:/var/lib/clinicguard
     networks:
       server:
         ipv4_address: 10.10.30.11
@@ -208,3 +212,4 @@ volumes:
   ehr-logs:
   loki-data:
   grafana-data:
+  ehr-data:

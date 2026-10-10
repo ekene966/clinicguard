@@ -24,7 +24,7 @@ jobs:
       - name: Install test runner
         run: python -m pip install pytest
       - name: Run policy integration tests
-        run: python -m pytest -q tests/test_policy.py
+        run: python -m pytest -q ehr_app/test_app.py tests/test_policy.py
       - name: Run attack simulation
         run: docker compose exec -T attacker /attack/attack.sh
       - name: Stop ClinicGuard

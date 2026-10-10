@@ -1,4 +1,4 @@
-.PHONY: up down test attack logs
+.PHONY: up down test attack logs backup
 
 ifeq ($(OS),Windows_NT)
 PYTHON := py -3.12
@@ -20,3 +20,6 @@ attack:
 
 logs:
 	docker compose logs -f --tail=100
+
+backup:
+	sh scripts/backup.sh

@@ -122,6 +122,11 @@ services:
         ipv4_address: 10.10.99.20
     volumes:
       - loki-data:/loki
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3100/ready >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   promtail:
     image: grafana/promtail:3.2.1
@@ -153,6 +158,12 @@ services:
       GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
       GF_CHECK_FOR_UPDATES: "false"
       GF_PLUGINS_PREINSTALL: ""
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
     volumes:
       - grafana-data:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro

@@ -161,6 +161,10 @@ Good next improvements, in increasing scope:
 
 See [CHANGELOG.md](CHANGELOG.md) for completed release notes.
 
+Operational helpers are in [deploy/](deploy/) and [scripts/](scripts/).
+`make backup` captures the synthetic EHR database, Loki data, and Grafana
+state for restore exercises.
+
 ## Expected proof
 
 ```text

@@ -39,9 +39,10 @@ Docker Desktop may expose the forwarding sysctl as read-only inside the
 container. The Compose-level sysctl is the authoritative configuration; the
 entrypoint does not attempt to rewrite it at runtime.
 
-The current foundation policy temporarily permits forwarding so routing can be
-verified independently. The default-deny firewall is introduced in Phase 3.
-DHCP/DNS, EHR, IDS, and observability services follow in later phases.
+The gateway now uses a default-deny forwarding policy. Staff can reach the
+temporary EHR test endpoint on TCP 8080; guest and attacker clients must not
+reach it. DHCP/DNS, TLS, IDS, and observability services follow in later
+phases.
 
 ## Troubleshooting
 

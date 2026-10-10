@@ -47,6 +47,15 @@ services:
       attacker:
         ipv4_address: 10.10.66.10
 
+  ehr:
+    build: ./clients
+    cap_add:
+      - NET_ADMIN
+    command: ["server"]
+    networks:
+      server:
+        ipv4_address: 10.10.30.10
+
   test:
     image: python:3.12-alpine
     working_dir: /workspace

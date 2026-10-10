@@ -19,14 +19,13 @@ external path that bypasses the gateway.
 
 | Source | Destination | Policy |
 | --- | --- | --- |
-| Staff | EHR | Allow TCP 443 only |
+| Staff | EHR | Allow the Phase 3 test endpoint on TCP 8080; HTTPS/TCP 443 follows |
 | Staff | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Staff, server, management | Deny |
 | Attacker | Internal zones | Deny and alert |
 | Management | All zones | Read-only monitoring access |
 
-The policy will be implemented and tested in later phases. This document
-describes the intended behavior, not a claim that the Phase 1 scaffold already
-enforces it.
-
+The Phase 3 policy implements default deny and allows only the explicitly
+listed flows. The temporary HTTP endpoint is a routing-policy test fixture;
+the EHR will move behind TLS in the next phase.

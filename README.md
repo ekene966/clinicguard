@@ -10,9 +10,10 @@ automated security-policy tests.
 
 ## Status
 
-Phase 2: network foundation. The gateway forwards traffic and each client
-explicitly uses its gateway interface as its default route. Firewall policy is
-the next phase.
+Phase 3: default-deny firewall policy. Staff can reach the synthetic EHR
+endpoint on TCP 8080; guest and attacker traffic to internal zones is denied.
+TLS and the production-style HTTPS reverse proxy are planned for the next
+phase.
 
 ## Planned zones
 

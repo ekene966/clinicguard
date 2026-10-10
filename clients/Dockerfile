@@ -1,6 +1,6 @@
 FROM alpine:3.20
 
-RUN apk add --no-cache iproute2 iputils curl
+RUN apk add --no-cache iproute2 iputils curl python3
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 0755 /entrypoint.sh

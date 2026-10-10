@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 import pytest
 
@@ -99,3 +100,21 @@ def test_suricata_is_running_on_gateway_namespace():
     )
     assert result.returncode == 0
     assert result.stdout.strip()
+
+
+def test_attack_simulation_generates_suricata_alert():
+    attack = run_in_service("attacker", "/attack/attack.sh")
+    assert attack.returncode == 0, attack.stderr
+
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        alerts = run_in_service(
+            "suricata",
+            "sh",
+            "-c",
+            "grep '\"signature_id\":1000002' /var/log/suricata/eve.json",
+        )
+        if alerts.returncode == 0 and alerts.stdout.strip():
+            return
+        time.sleep(1)
+    pytest.fail("attack simulation did not produce a Suricata alert")

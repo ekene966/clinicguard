@@ -35,3 +35,14 @@ container router; removing `internal: true` would create a bypass.
 Suricata shares the gateway network namespace so it can inspect the gateway's
 zone interfaces. Its local rules alert on guest-to-server HTTPS probes and
 attacker TCP probes.
+
+The EHR is intentionally split into two services. `ehr_app/` is the
+application backend: it owns the SQLite database, authentication, roles, and
+audit events. `ehr/` is the server-zone nginx TLS reverse proxy in front of
+that backend. Keeping the proxy separate makes the TLS boundary and its logs
+visible to the network tests.
+
+The gateway image includes `dnsmasq` from the original network-foundation
+scaffold, but the current entrypoint does not start it. DHCP/DNS is therefore
+not part of the implemented access policy; activating and testing it is a
+future roadmap item rather than a current capability claim.

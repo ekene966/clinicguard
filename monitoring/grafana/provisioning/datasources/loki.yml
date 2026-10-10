@@ -1,0 +1,10 @@
+apiVersion: 1
+
+datasources:
+  - name: ClinicGuard Loki
+    uid: clinicguard-loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    isDefault: true
+    editable: false

@@ -10,6 +10,8 @@ services:
       - NET_RAW
     sysctls:
       net.ipv4.ip_forward: "1"
+    volumes:
+      - gateway-logs:/var/log/nginx
     networks:
       staff:
         ipv4_address: 10.10.10.254
@@ -73,6 +75,8 @@ services:
     cap_add:
       - NET_ADMIN
     command: ["attacker"]
+    volumes:
+      - ./attacker:/attack:ro
     networks:
       attacker:
         ipv4_address: 10.10.66.10
@@ -93,6 +97,51 @@ services:
     networks:
       server:
         ipv4_address: 10.10.30.10
+    volumes:
+      - ehr-logs:/var/log/nginx
+
+  loki:
+    image: grafana/loki:3.2.1
+    command: ["-config.file=/etc/loki/local-config.yaml"]
+    networks:
+      management:
+        ipv4_address: 10.10.99.20
+    volumes:
+      - loki-data:/loki
+
+  promtail:
+    image: grafana/promtail:3.2.1
+    command: ["-config.file=/etc/promtail/config.yml"]
+    depends_on:
+      - loki
+    networks:
+      management:
+        ipv4_address: 10.10.99.21
+    volumes:
+      - ./monitoring/promtail:/etc/promtail:ro
+      - suricata-logs:/var/log/suricata:ro
+      - gateway-logs:/var/log/gateway:ro
+      - ehr-logs:/var/log/ehr:ro
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    depends_on:
+      - loki
+    networks:
+      management:
+        ipv4_address: 10.10.99.22
+      ui:
+        ipv4_address: 10.10.100.22
+    ports:
+      - "3000:3000"
+    environment:
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_CHECK_FOR_UPDATES: "false"
+      GF_PLUGINS_PREINSTALL: ""
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
 
   test:
     image: python:3.12-alpine
@@ -138,6 +187,14 @@ networks:
     ipam:
       config:
         - subnet: 10.10.66.0/24
+  ui:
+    ipam:
+      config:
+        - subnet: 10.10.100.0/24
 
 volumes:
   suricata-logs:
+  gateway-logs:
+  ehr-logs:
+  loki-data:
+  grafana-data:

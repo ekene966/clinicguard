@@ -18,6 +18,11 @@ Guest and attacker traffic to the gateway's HTTPS listener is denied.
 Suricata is now included in the gateway namespace with local rules for guest
 and attacker probes.
 
+The observability stack includes Loki, Promtail, and Grafana. Run
+`make attack` to exercise blocked HTTPS probes and inspect the resulting logs.
+The HIPAA alignment discussion is in
+[docs/hipaa-control-map.md](docs/hipaa-control-map.md).
+
 ## Planned zones
 
 | Zone | Subnet | Purpose |

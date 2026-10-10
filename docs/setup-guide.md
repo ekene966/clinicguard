@@ -73,6 +73,24 @@ The tests execute each request from its own client container. This is
 intentional: a test container attached to every zone would bypass the gateway
 and produce a false result.
 
+## Observability
+
+Start the monitoring services with the rest of the stack:
+
+```bash
+docker compose up -d loki promtail grafana
+```
+
+Open Grafana at <http://localhost:3000>. The provisioned dashboard is
+**ClinicGuard Security Overview** and uses Loki as its default data source.
+The lab does not configure an administrator password or expose Grafana beyond
+localhost; set `GF_SECURITY_ADMIN_PASSWORD` before using this stack outside a
+local lab.
+
+Logs are shared through named volumes rather than Docker Desktop's host log
+path. Promtail collects Suricata `eve.json` and nginx access/error logs, and
+ships them to Loki.
+
 ## Troubleshooting
 
 - If Docker commands fail inside WSL, confirm Docker Desktop is running and

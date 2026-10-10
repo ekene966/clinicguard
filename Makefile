@@ -1,5 +1,11 @@
 .PHONY: up down test attack logs
 
+ifeq ($(OS),Windows_NT)
+PYTHON := py -3.12
+else
+PYTHON := python3
+endif
+
 up:
 	docker compose up -d --build
 
@@ -7,7 +13,7 @@ down:
 	docker compose down --remove-orphans
 
 test:
-	python -m pytest -q tests/test_policy.py
+	$(PYTHON) -m pytest -q tests/test_policy.py
 
 attack:
 	docker compose exec attacker /attack/attack.sh

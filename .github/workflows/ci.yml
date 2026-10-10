@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check for committed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Python security lint
+        run: |
+          python -m pip install bandit
+          bandit -r tests -q
       - name: Validate Compose configuration
         run: docker compose config
       - name: Start ClinicGuard

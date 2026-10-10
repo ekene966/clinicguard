@@ -12,6 +12,11 @@ services:
       net.ipv4.ip_forward: "1"
     volumes:
       - gateway-logs:/var/log/nginx
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -qO- https://10.10.10.254/ >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       staff:
         ipv4_address: 10.10.10.254
@@ -99,6 +104,11 @@ services:
         ipv4_address: 10.10.30.10
     volumes:
       - ehr-logs:/var/log/nginx
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -qO- https://10.10.30.10/ >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   loki:
     image: grafana/loki:3.2.1

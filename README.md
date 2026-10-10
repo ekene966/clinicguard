@@ -142,6 +142,19 @@ Good next improvements, in increasing scope:
 7. Add a production-oriented deployment example using Kubernetes network
    policies, external secrets, and managed identity.
 
+## Release roadmap
+
+- **v0.2.0 — Hardening:** health checks, security headers, secret scanning,
+  and Python security linting.
+- **v0.3.0 — EHR security:** authenticated users, roles, audit events,
+  validation, and a persistent synthetic database.
+- **v0.4.0 — Operations:** alert rules, backups, resource controls, and a
+  production-style deployment profile.
+- **v1.0.0 — Advanced security:** image scanning, web security testing,
+  contribution tooling, releases, and expanded portfolio evidence.
+
+See [CHANGELOG.md](CHANGELOG.md) for completed release notes.
+
 ## Expected proof
 
 ```text

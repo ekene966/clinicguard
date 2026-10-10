@@ -13,7 +13,7 @@ ip route replace default via "$gateway"
 echo "Client route configured through $gateway"
 
 if [ "$1" = "server" ]; then
-  exec python3 -m http.server 8080 --bind 0.0.0.0
+  exec python3 -m http.server 8080 --bind 10.10.30.11
 fi
 
 exec sleep infinity

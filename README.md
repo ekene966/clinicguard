@@ -10,10 +10,9 @@ automated security-policy tests.
 
 ## Status
 
-Phase 3: default-deny firewall policy. Staff can reach the synthetic EHR
-endpoint on TCP 8080; guest and attacker traffic to internal zones is denied.
-TLS and the production-style HTTPS reverse proxy are planned for the next
-phase.
+Phase 4: TLS EHR reverse proxy. Staff reach nginx over HTTPS on TCP 443 while
+the synthetic application remains on an isolated backend address. Guest and
+attacker traffic to the server zone remains denied.
 
 ## Planned zones
 

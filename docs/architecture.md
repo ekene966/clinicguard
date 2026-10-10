@@ -19,13 +19,13 @@ external path that bypasses the gateway.
 
 | Source | Destination | Policy |
 | --- | --- | --- |
-| Staff | EHR | Allow the Phase 3 test endpoint on TCP 8080; HTTPS/TCP 443 follows |
+| Staff | EHR | Allow HTTPS/TCP 443 to the reverse proxy only |
 | Staff | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Staff, server, management | Deny |
 | Attacker | Internal zones | Deny and alert |
 | Management | All zones | Read-only monitoring access |
 
-The Phase 3 policy implements default deny and allows only the explicitly
-listed flows. The temporary HTTP endpoint is a routing-policy test fixture;
-the EHR will move behind TLS in the next phase.
+The Phase 4 policy implements default deny and allows staff to reach only the
+HTTPS reverse proxy. The application backend is not directly reachable from
+the staff zone.

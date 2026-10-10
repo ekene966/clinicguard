@@ -47,11 +47,19 @@ services:
       attacker:
         ipv4_address: 10.10.66.10
 
-  ehr:
+  ehr-app:
     build: ./clients
     cap_add:
       - NET_ADMIN
     command: ["server"]
+    networks:
+      server:
+        ipv4_address: 10.10.30.11
+
+  ehr:
+    build: ./ehr
+    depends_on:
+      - ehr-app
     networks:
       server:
         ipv4_address: 10.10.30.10

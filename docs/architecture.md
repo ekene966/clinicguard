@@ -29,3 +29,7 @@ external path that bypasses the gateway.
 The Phase 4 policy implements default deny and allows staff to reach only the
 HTTPS reverse proxy. The application backend is not directly reachable from
 the staff zone.
+
+Suricata shares the gateway network namespace so it can inspect the gateway's
+zone interfaces. Its local rules alert on guest-to-server HTTPS probes and
+attacker TCP probes.

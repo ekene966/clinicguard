@@ -14,6 +14,9 @@ Phase 4: TLS EHR reverse proxy. Staff reach nginx over HTTPS on TCP 443 while
 the synthetic application remains on an isolated backend address. Guest and
 attacker traffic to the server zone remains denied.
 
+Suricata is now included in the gateway namespace with local rules for guest
+and attacker probes.
+
 ## Planned zones
 
 | Zone | Subnet | Purpose |

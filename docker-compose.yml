@@ -20,6 +20,26 @@ services:
       attacker:
         ipv4_address: 10.10.66.254
 
+  suricata:
+    image: jasonish/suricata:7.0
+    network_mode: service:gateway
+    depends_on:
+      - gateway
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    command:
+      - suricata
+      - -i
+      - eth0
+      - -S
+      - /rules/local.rules
+      - -l
+      - /var/log/suricata
+    volumes:
+      - ./monitoring/suricata:/rules:ro
+      - suricata-logs:/var/log/suricata
+
   staff-client:
     build: ./clients
     cap_add:
@@ -75,26 +95,39 @@ services:
 networks:
   staff:
     internal: true
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
     ipam:
       config:
         - subnet: 10.10.10.0/24
   guest:
     internal: true
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
     ipam:
       config:
         - subnet: 10.10.20.0/24
   server:
     internal: true
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
     ipam:
       config:
         - subnet: 10.10.30.0/24
   management:
     internal: true
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
     ipam:
       config:
         - subnet: 10.10.99.0/24
   attacker:
     internal: true
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
     ipam:
       config:
         - subnet: 10.10.66.0/24
+
+volumes:
+  suricata-logs:

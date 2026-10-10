@@ -8,21 +8,17 @@ automated security-policy tests.
 > This project uses synthetic data only. It is an educational lab and is not a
 > HIPAA compliance certification or a production healthcare network.
 
-## Status
+## What is implemented
 
-Phase 6: automated policy tests and observability. Staff reach nginx on the
-gateway over HTTPS on TCP 443. The gateway proxies to the EHR on its directly
-attached server-zone interface, avoiding Docker Desktop's host-level bridge
-isolation bypass. Guest and attacker traffic to the gateway's HTTPS listener
-is denied. Loki, Promtail, Grafana, and Suricata provide centralized evidence.
-
-Suricata is now included in the gateway namespace with local rules for guest
-and attacker probes.
+Staff reach the gateway EHR proxy over HTTPS on TCP 443. The gateway proxies
+to the EHR through its server-zone interface. Guest and attacker traffic is
+denied by default. Suricata, Loki, Promtail, and Grafana provide centralized
+security evidence, while pytest proves the access policy.
 
 The observability stack includes Loki, Promtail, and Grafana. Run
 `make attack` to exercise blocked HTTPS probes and inspect the resulting logs.
-The HIPAA alignment discussion is in
-[docs/hipaa-control-map.md](docs/hipaa-control-map.md).
+See the [threat model](docs/threat-model.md) and
+[HIPAA alignment map](docs/hipaa-control-map.md) for scope and limitations.
 
 ## Planned zones
 
@@ -46,7 +42,7 @@ Docker networks simulate separate routed segments. They are not physical
 For the best bind-mount and filesystem behavior, keep the working copy inside
 the WSL filesystem (for example, `~/src/clinicguard`) when running Docker.
 
-## Planned commands
+## Quick start
 
 ```bash
 make up
@@ -55,5 +51,40 @@ make attack
 make down
 ```
 
-See [docs/setup-guide.md](docs/setup-guide.md) for the Windows + WSL2 setup
-notes and [docs/architecture.md](docs/architecture.md) for the design.
+Open Grafana at <http://localhost:3000> after `make up`.
+
+See [docs/setup-guide.md](docs/setup-guide.md) for Windows + WSL2 setup notes
+and [docs/architecture.md](docs/architecture.md) for the design.
+
+## Expected proof
+
+```text
+Staff HTTPS to the gateway       PASS
+Guest HTTPS to the gateway       BLOCKED
+Attacker HTTPS to the gateway    BLOCKED
+Staff direct EHR bypass          BLOCKED
+Forwarding enabled               PASS
+Forward chain policy             DROP
+```
+
+Run `make test` to verify these assertions. Run `make attack` to produce
+blocked-probe evidence. The test suite runs requests from the individual
+client containers so it cannot accidentally bypass the gateway with a
+multi-homed test container.
+
+## Portfolio evidence
+
+For a project walkthrough, capture:
+
+1. `make test` showing all policy tests passing.
+2. `make attack` showing blocked internal probes.
+3. Grafana's **ClinicGuard Security Overview** dashboard at
+   <http://localhost:3000>.
+4. The Mermaid topology in
+   [docs/architecture.md](docs/architecture.md).
+
+## Limitations
+
+Docker networks simulate routed segmentation; they are not physical VLANs.
+All data is synthetic. ClinicGuard is an educational security lab and is not
+a HIPAA compliance certification or production healthcare network.

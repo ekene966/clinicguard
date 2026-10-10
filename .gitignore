@@ -6,4 +6,4 @@ __pycache__/
 *.key
 .pytest_cache/
 .DS_Store
-
+*.log

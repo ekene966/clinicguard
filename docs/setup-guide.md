@@ -19,7 +19,7 @@
    git --version
    ```
 
-5. Start the scaffold:
+5. Start the stack:
 
    ```bash
    docker compose config
@@ -68,6 +68,10 @@ Run the automated policy checks from the repository root:
 ```bash
 make test
 ```
+
+On Windows PowerShell, the Makefile selects `py -3.12`; on WSL/Linux it
+selects `python3`. You can also run the suite directly with
+`py -3.12 -m pytest -q` on Windows.
 
 The tests execute each request from its own client container. This is
 intentional: a test container attached to every zone would bypass the gateway

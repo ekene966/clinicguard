@@ -7,11 +7,10 @@ down:
 	docker compose down --remove-orphans
 
 test:
-	docker compose run --rm test
+	py -3.12 -m pytest -q tests/test_policy.py
 
 attack:
 	docker compose run --rm attacker
 
 logs:
 	docker compose logs -f --tail=100
-

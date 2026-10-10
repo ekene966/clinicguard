@@ -63,6 +63,16 @@ gateway address (`10.10.66.254`) should time out. The zone networks remain
 appear to work, because Docker would then provide a host-level bypass around
 the gateway policy.
 
+Run the automated policy checks from the repository root:
+
+```bash
+make test
+```
+
+The tests execute each request from its own client container. This is
+intentional: a test container attached to every zone would bypass the gateway
+and produce a false result.
+
 ## Troubleshooting
 
 - If Docker commands fail inside WSL, confirm Docker Desktop is running and

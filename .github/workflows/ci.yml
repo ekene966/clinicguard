@@ -11,3 +11,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate Compose configuration
         run: docker compose config
+      - name: Start ClinicGuard
+        run: docker compose up -d --build
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Run policy integration tests
+        run: python -m pytest -q tests/test_policy.py
+      - name: Stop ClinicGuard
+        if: always()
+        run: docker compose down --remove-orphans

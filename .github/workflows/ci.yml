@@ -16,7 +16,7 @@ jobs:
       - name: Run Python security lint
         run: |
           python -m pip install bandit
-          bandit -r tests -q
+          bandit -r ehr_app -q
       - name: Validate Compose configuration
         run: docker compose config
       - name: Start ClinicGuard

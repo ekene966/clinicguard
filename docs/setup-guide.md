@@ -35,6 +35,10 @@ docker compose exec guest-client ip route
 docker compose exec gateway cat /proc/sys/net/ipv4/ip_forward
 ```
 
+Docker Desktop may expose the forwarding sysctl as read-only inside the
+container. The Compose-level sysctl is the authoritative configuration; the
+entrypoint does not attempt to rewrite it at runtime.
+
 The current foundation policy temporarily permits forwarding so routing can be
 verified independently. The default-deny firewall is introduced in Phase 3.
 DHCP/DNS, EHR, IDS, and observability services follow in later phases.

@@ -39,10 +39,10 @@ Docker Desktop may expose the forwarding sysctl as read-only inside the
 container. The Compose-level sysctl is the authoritative configuration; the
 entrypoint does not attempt to rewrite it at runtime.
 
-The gateway uses a default-deny forwarding policy. Staff can reach the EHR
-reverse proxy over HTTPS on TCP 443; guest and attacker clients must not reach
-the server zone. The lab certificate is self-signed and intended for testing,
-so validation commands use `curl -k`.
+The gateway uses a default-deny policy. Staff reach the gateway's EHR reverse
+proxy over HTTPS on TCP 443; guest and attacker clients cannot use that
+listener. The lab certificate is self-signed and intended for testing, so
+validation commands use `curl -k`.
 
 To verify the proxy from inside the server zone:
 
@@ -50,9 +50,18 @@ To verify the proxy from inside the server zone:
 docker compose exec gateway wget --no-check-certificate -qO- https://10.10.30.10/
 ```
 
-The response should be served by the synthetic backend through nginx. Client
-to server policy tests will be added with the integration test harness once
-the Docker Desktop routed-network behavior is covered.
+The response should be served by the synthetic backend through the EHR nginx
+proxy. From a staff client, test the policy boundary with:
+
+```bash
+docker compose exec staff-client wget --no-check-certificate -qO- https://10.10.10.254/
+```
+
+The same request from the guest gateway address (`10.10.20.254`) or attacker
+gateway address (`10.10.66.254`) should time out. The zone networks remain
+`internal: true`; do not remove that setting to make cross-bridge traffic
+appear to work, because Docker would then provide a host-level bypass around
+the gateway policy.
 
 ## Troubleshooting
 

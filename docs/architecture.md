@@ -19,7 +19,7 @@ external path that bypasses the gateway.
 
 | Source | Destination | Policy |
 | --- | --- | --- |
-| Staff | EHR | Allow HTTPS/TCP 443 to the reverse proxy only |
+| Staff | Gateway EHR proxy | Allow HTTPS/TCP 443 only |
 | Staff | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Internet/DNS | Allow DNS, HTTP, HTTPS |
 | Guest | Staff, server, management | Deny |
@@ -27,8 +27,10 @@ external path that bypasses the gateway.
 | Management | All zones | Read-only monitoring access |
 
 The Phase 4 policy implements default deny and allows staff to reach only the
-HTTPS reverse proxy. The application backend is not directly reachable from
-the staff zone.
+gateway's HTTPS reverse proxy. The gateway reaches the EHR through its
+server-zone interface. This application-layer boundary is used because Docker
+Desktop isolates `internal: true` bridge networks before packets can reach a
+container router; removing `internal: true` would create a bypass.
 
 Suricata shares the gateway network namespace so it can inspect the gateway's
 zone interfaces. Its local rules alert on guest-to-server HTTPS probes and

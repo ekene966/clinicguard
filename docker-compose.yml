@@ -3,6 +3,8 @@ name: clinicguard
 services:
   gateway:
     build: ./gateway
+    depends_on:
+      - ehr
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -32,6 +34,14 @@ services:
       - suricata
       - -i
       - eth0
+      - -i
+      - eth1
+      - -i
+      - eth2
+      - -i
+      - eth3
+      - -i
+      - eth4
       - -S
       - /rules/local.rules
       - -l

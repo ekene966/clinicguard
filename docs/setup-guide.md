@@ -27,9 +27,17 @@
    docker compose ps
    ```
 
-The initial Compose file only establishes the zones and gateway container.
-Firewall, DHCP/DNS, EHR, IDS, and observability services are introduced in
-later phases.
+To inspect the foundation routes:
+
+```bash
+docker compose exec staff-client ip route
+docker compose exec guest-client ip route
+docker compose exec gateway cat /proc/sys/net/ipv4/ip_forward
+```
+
+The current foundation policy temporarily permits forwarding so routing can be
+verified independently. The default-deny firewall is introduced in Phase 3.
+DHCP/DNS, EHR, IDS, and observability services follow in later phases.
 
 ## Troubleshooting
 
@@ -40,4 +48,3 @@ later phases.
 - The gateway requires Linux networking capabilities. Docker Desktop may
   display a warning when those capabilities are unavailable; do not weaken the
   policy to hide that warning.
-

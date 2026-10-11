@@ -14,14 +14,17 @@ ClinicGuard attack simulation
 BLOCKED 10.10.10.254:443
 BLOCKED 10.10.20.254:443
 BLOCKED 10.10.30.10:443
+BLOCKED 10.10.66.254:443
 BLOCKED 10.10.99.254:443
 ```
 
 The live CI equivalents are the [policy workflow](https://github.com/ekene966/clinicguard/actions/workflows/ci.yml)
 and [security workflow](https://github.com/ekene966/clinicguard/actions/workflows/security.yml).
 The policy tests run the attacker simulation and verify a matching Suricata
-alert in `eve.json`; they also verify the EHR unit tests, network policy, and
-runtime Suricata state.
+alert delta in `eve.json`, so an alert left by an earlier run cannot satisfy
+the check. Suricata sniffs the gateway interfaces before netfilter, which is
+why it can alert on probes that the firewall later drops. The tests also verify
+the EHR unit tests, network policy, and runtime Suricata state.
 
 For visual evidence, start the stack with `make up`, open
 <http://localhost:3000>, and select **ClinicGuard Security Overview**. The

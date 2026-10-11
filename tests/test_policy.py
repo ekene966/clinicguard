@@ -6,8 +6,8 @@ import pytest
 
 TARGET = {
     "staff-client": "https://10.10.10.254/",
-    "guest-client": "https://10.10.20.254/",
-    "attacker": "https://10.10.66.254/",
+    "untrusted-proxy": "https://10.10.10.254/",
+    "ehr": "https://10.10.30.10/",
 }
 
 
@@ -54,8 +54,8 @@ def test_staff_can_reach_ehr_proxy():
 @pytest.mark.parametrize(
     ("service", "url"),
     [
-        ("guest-client", TARGET["guest-client"]),
-        ("attacker", TARGET["attacker"]),
+        ("guest-client", TARGET["untrusted-proxy"]),
+        ("attacker", TARGET["untrusted-proxy"]),
     ],
 )
 def test_untrusted_zones_cannot_reach_gateway_proxy(service: str, url: str):
@@ -65,6 +65,11 @@ def test_untrusted_zones_cannot_reach_gateway_proxy(service: str, url: str):
 
 def test_staff_cannot_bypass_gateway_to_ehr_network():
     result = run_from_client("staff-client", "https://10.10.30.10/")
+    assert result.returncode != 0
+
+
+def test_guest_cannot_bypass_gateway_to_ehr_network():
+    result = run_from_client("guest-client", TARGET["ehr"])
     assert result.returncode != 0
 
 
@@ -103,6 +108,15 @@ def test_suricata_is_running_on_gateway_namespace():
 
 
 def test_attack_simulation_generates_suricata_alert():
+    before = run_in_service(
+        "suricata",
+        "sh",
+        "-c",
+        "grep -c '\"signature_id\":1000002' /var/log/suricata/eve.json || true",
+    )
+    assert before.returncode == 0, before.stderr
+    previous_alerts = int(before.stdout.strip() or "0")
+
     attack = run_in_service("attacker", "/attack/attack.sh")
     assert attack.returncode == 0, attack.stderr
 
@@ -114,7 +128,8 @@ def test_attack_simulation_generates_suricata_alert():
             "-c",
             "grep '\"signature_id\":1000002' /var/log/suricata/eve.json",
         )
-        if alerts.returncode == 0 and alerts.stdout.strip():
+        current_alerts = len(alerts.stdout.splitlines()) if alerts.returncode == 0 else 0
+        if current_alerts > previous_alerts:
             return
         time.sleep(1)
     pytest.fail("attack simulation did not produce a Suricata alert")

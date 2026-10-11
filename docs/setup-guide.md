@@ -57,8 +57,9 @@ proxy. From a staff client, test the policy boundary with:
 docker compose exec staff-client wget --no-check-certificate -qO- https://10.10.10.254/
 ```
 
-The same request from the guest gateway address (`10.10.20.254`) or attacker
-gateway address (`10.10.66.254`) should time out. The zone networks remain
+The same request to the staff gateway address (`10.10.10.254`) from the guest
+or attacker client should time out. Direct requests from those clients to the
+EHR address (`10.10.30.10`) should also time out. The zone networks remain
 `internal: true`; do not remove that setting to make cross-bridge traffic
 appear to work, because Docker would then provide a host-level bypass around
 the gateway policy.
